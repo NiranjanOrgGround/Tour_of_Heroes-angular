@@ -23,9 +23,3 @@ jobs:
       with:
         name: artifact
         path: ./dist
-    - name: creating docker image
-      run: docker build . -t angular:latest
-    - name: creating container
-      run: docker run -itd --name angular -p 80:80 angular:latest
-    - name: checking container
-      run: docker ps
