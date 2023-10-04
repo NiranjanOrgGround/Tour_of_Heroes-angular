@@ -1,0 +1,27 @@
+name: docker
+
+on:
+  workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: version
+        run: |
+          echo "VERSION=$(echo $(date +%Y%m%d_%H%M))" >> $GITHUB_ENV
+              
+      - name: Downloading the artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: "myArtifact_${{needs.Build.outputs.set_date}}"
+          path: ./artifact
+
+      - name: Checkout the Source Code
+        uses: actions/checkout@v3
+
+      - name: Build and Push the image to GHCR
+        run: |
+          docker login -u $GITHUB_REPOSITORY_OWNER -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
+          docker build . -t ghcr.io/canarysplayground/myshuttle:${{ env.VERSION }}     
+          docker push ghcr.io/canarysplayground/myshuttle:${{ env.VERSION }}
