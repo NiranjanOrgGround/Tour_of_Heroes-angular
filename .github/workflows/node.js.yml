@@ -39,12 +39,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: artifact
-          # path: ./artifact
+          path: ./artifact
 
       - run: ls
 
-      # - name: Build and Push the image to GHCR
-      #   run: |
-      #     docker login -u $GITHUB_REPOSITORY_OWNER -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
-      #     docker build . -t ghcr.io/canarysplayground/myshuttle:${{ env.VERSION }}     
-      #     docker push ghcr.io/canarysplayground/myshuttle:${{ env.VERSION }}
+      - name: Build and Push the image to GHCR
+        run: |
+          docker login -u $GITHUB_REPOSITORY_OWNER -p ${{ secrets.GITHUB_TOKEN }} ghcr.io
+          docker build . -t ghcr.io/canarysplayground/myshuttle:${{ env.VERSION }}     
+          docker push ghcr.io/canarysplayground/myshuttle:${{ env.VERSION }}
